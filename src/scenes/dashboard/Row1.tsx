@@ -63,11 +63,13 @@ const Row1 = () => {
 
   // Calculate statistics for sideText
   const totalRevenue = useMemo(() => {
-    return data?.[0].monthlyData.reduce((acc, { revenue }) => acc + revenue, 0).toFixed(2);
+    if (!data?.[0]?.monthlyData) return "0.00"; // Handle the case where data is undefined
+    return data[0].monthlyData.reduce((acc, { revenue }) => acc + (revenue || 0), 0).toFixed(2);
   }, [data]);
-
+  
   const totalProfit = useMemo(() => {
-    return data?.[0].monthlyData.reduce((acc, { revenue, expenses }) => acc + (revenue - expenses), 0).toFixed(2);
+    if (!data?.[0]?.monthlyData) return "0.00"; // Handle the case where data is undefined
+    return data[0].monthlyData.reduce((acc, { revenue, expenses }) => acc + ((revenue || 0) - (expenses || 0)), 0).toFixed(2);
   }, [data]);
 
   // Example percentage change calculation
